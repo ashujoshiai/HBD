@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Lobster+Two:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --pink: #ff7eb9;
+    --purple: #7f00ff;
+    --blue: #00aaff; /* Added blue back for gradient animation */
+    --gift-box-color: #e74c3c;
+    --gift-ribbon-color: #c0392b;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue)); /* Initial gradient */
+    background-size: 400% 400%; /* For gradient animation */
+    animation: gradient-animation 15s ease infinite; /* Dynamic gradient */
+    position: relative;
+    transition: filter 0.5s ease-in-out; /* For background blur */
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container.blurred {
+    filter: blur(5px);
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.background::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 1%, transparent 10%),
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.08) 1%, transparent 10%),
+                radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.06) 1%, transparent 10%);
+    background-size: 200px 200px;
+    animation: star-float 30s infinite linear;
+}
+
+@keyframes star-float {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 200%; }
+}
+
+.container {
+    text-align: center;
+    z-index: 1;
+}
+
+/* Gift Box Styling */
+.gift-box {
+    width: 200px; /* Larger gift box */
+    height: 150px;
+    position: relative;
+    margin: 0 auto;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transform: rotateX(15deg) rotateY(-15deg);
+    transition: transform 0.5s ease-in-out;
+}
+
+.click-text {
+    color: white;
+    font-size: 1.5em; /* Slightly larger */
+    font-family: 'Pacifico', cursive; /* Stylish font */
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s, pulseText 1.5s infinite alternate 2s; /* Fade in and then pulse */
+    text-shadow: 0 0 5px rgba(255,255,255,0.7); /* Subtle glow */
+}
+
+@keyframes pulseText {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+.gift-box.zoom-in {
+    transform: scale(1.1) rotateX(15deg) rotateY(-15deg);
+}
+
+.gift-base {
+    width: 100%;
+    height: 100%;
+    background-color: var(--gift-box-color);
+    position: absolute;
+    bottom: 0;
+    transform: translateZ(0);
+    border-radius: 5px;
+}
+
+.gift-lid {
+    width: 110%;
+    height: 40px; /* Larger lid */
+    background-color: var(--gift-box-color);
+    position: absolute;
+    top: -35px; /* Adjusted position */
+    left: -5%;
+    transform: translateZ(0) translateY(0px);
+    transform-origin: bottom center;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out;
+}
+
+.gift-box.open .gift-lid {
+    transform: translateZ(0) translateY(-100px) rotateX(45deg); /* Open lid animation */
+}
+
+.gift-ribbon-v {
+    width: 40px; /* Thicker ribbon */
+    height: 190px; /* Longer ribbon */
+    background-color: var(--gift-ribbon-color);
+    position: absolute;
+    top: -35px;
+    left: calc(50% - 20px); /* Adjusted position */
+    transform: translateZ(1px);
+}
+
+.gift-ribbon-h {
+    width: 220px; /* Wider ribbon */
+    height: 40px; /* Thicker ribbon */
+    background-color: var(--gift-ribbon-color);
+    position: absolute;
+    top: 55px; /* Adjusted position */
+    left: -10px; /* Adjusted position */
+    transform: translateZ(1px);
+}
+
+/* Floating GIFs after gift box opens */
+.floating-gifs-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2; /* Above background, below modal */
+    display: none; /* Hidden by default */
+}
+
+.floating-gifs-container.show {
+    display: block;
+}
+
+.floating-gif {
+    position: absolute;
+    width: 80px; /* Size of floating GIFs */
+    height: 80px;
+    opacity: 0;
+    animation: float-up-gif 5s infinite ease-in-out;
+}
+
+@keyframes float-up-gif {
+    0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%) scale(1.2);
+        opacity: 0;
+    }
+}
+
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative;
+    width: 80%;
+    max-width: 400px;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--purple);
+    margin-bottom: 25px;
+    font-size: 2.2em;
+}
+
+.modal-content input[type="text"] {
+    width: calc(100% - 30px);
+    padding: 12px 15px;
+    margin-bottom: 25px;
+    border: 2px solid var(--purple);
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    outline: none;
+    box-shadow: 0 0 0 0 rgba(127, 0, 255, 0.5);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-content input[type="text"]:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 15px 5px rgba(255, 126, 185, 0.7);
+}
+
+.modal-content button {
+    background: linear-gradient(45deg, var(--pink), var(--purple)); /* Gradient button */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: pulse-glow 2s infinite alternate; /* Glowing/pulsing effect */
+}
+
+.modal-content button:hover {
+    background-color: #e664a0; /* Fallback for gradient */
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 126, 185, 0.8);
+}
+
+.modal-content button:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 0px rgba(255, 126, 185, 0.5);
+    }
+    100% {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 126, 185, 0.8);
+    }
+}
+
+/* Confetti/Emoji Burst */
+.burst-particle {
+    position: absolute;
+    font-size: 2em;
+    opacity: 0;
+    animation: burst-fade-out 1s forwards;
+    pointer-events: none;
+}
+
+@keyframes burst-fade-out {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--burst-x), var(--burst-y)) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gift-box {
+        width: 150px;
+        height: 100px;
+    }
+
+    .gift-lid {
+        height: 30px;
+        top: -25px;
+    }
+
+    .gift-ribbon-v {
+        width: 30px;
+        height: 130px;
+        top: -25px;
+        left: calc(50% - 15px);
+    }
+
+    .gift-ribbon-h {
+        width: 165px;
+        height: 30px;
+        top: 35px;
+        left: -7.5px;
+    }
+
+    .main-heading {
+        font-size: 2.5em;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.8em;
+    }
+
+    .modal-content input[type="text"] {
+        padding: 10px 12px;
+        font-size: 1em;
+    }
+
+    .modal-content button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gift-box {
+        width: 150px;
+        height: 100px;
+    }
+
+    .gift-lid {
+        height: 30px;
+        top: -25px;
+    }
+
+    .gift-ribbon-v {
+        width: 30px;
+        height: 130px;
+        top: -25px;
+        left: calc(50% - 15px);
+    }
+
+    .gift-ribbon-h {
+        width: 165px;
+        height: 30px;
+        top: 35px;
+        left: -7.5px;
+    }
+
+    .main-heading {
+        font-size: 2.5em;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.8em;
+    }
+
+    .modal-content input[type="text"] {
+        padding: 10px 12px;
+        font-size: 1em;
+    }
+
+    .modal-content button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}

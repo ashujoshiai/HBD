@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Diary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Gloria+Hallelujah&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fdf6e3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* Allow vertical scrolling */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    .diary {
+      width: 90%;
+      max-width: 1000px;
+      min-height: 90vh; /* Allow vertical scrolling */
+      background: #fff8dc;
+      border: 8px solid #d4a373;
+      border-radius: 15px;
+      display: flex;
+      box-shadow: 0 0 25px rgba(0,0,0,0.2);
+      position: relative;
+      flex-wrap: wrap; /* Allow pages to wrap on smaller screens */
+    }
+
+    .close-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      position: fixed; /* Keep button fixed during scroll */
+      right: 15px;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 10;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-button:hover {
+      background-color: #e03570;
+    }
+
+    .page {
+      width: 50%; /* Two pages, left and right */
+      height: 100%; /* Ensure page takes full height of diary */
+      padding: 40px;
+      overflow-y: auto;
+      position: relative; /* For line positioning */
+      background-image: linear-gradient(to bottom, #e0e0e0 1px, transparent 1px); /* Lighter lines for realism */
+      background-size: 100% 28px; /* Slightly smaller line height for realism */
+      padding-top: 28px; /* Adjust for first line */
+      box-sizing: border-box; /* Include padding in width */
+      border-right: 1px solid #d4a373; /* Visual separation in the middle */
+    }
+
+    .page:last-child {
+      border-right: none; /* No border on the very last page */
+    }
+
+    @media (max-width: 768px) {
+      .diary {
+        perspective: 1000px; /* For 3D transform */
+      }
+
+      .page-wrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      }
+
+      .page-wrapper.turned {
+        transform: rotateY(-180deg);
+      }
+
+      .page {
+        width: 100%; /* Full width on smaller screens */
+        border-right: none; /* No vertical border on single column layout */
+        position: absolute;
+        top: 0;
+        left: 0;
+        backface-visibility: hidden;
+      }
+
+      .page.back-page {
+        transform: rotateY(180deg);
+      }
+    }
+
+    .page h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2rem;
+      color: #ff4081;
+      margin-bottom: 20px;
+      text-align: center; /* Center align headings */
+    }
+
+    .diary-content {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: 1.3rem;
+      line-height: 28px; /* Match line height for text */
+      white-space: pre-wrap;
+      padding-left: 15px; /* Indent text slightly more for realism */
+      padding-right: 15px;
+    }
+
+    .gif {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .gif img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="diary">
+    <button class="close-button" id="closeDiaryButton">&times;</button>
+    <div class="page-wrapper" id="pageWrapper">
+      <div class="page front-page" id="frontPage">
+        <h2>Best Wishes</h2>
+        <div class="diary-content">
+          May your day be filled with laughter 😂, love ❤️, cake 🎂, and endless surprises 🎉.
+          You are truly special ✨, and today is all about celebrating YOU 🥳.
+        </div>
+      </div>
+      <div class="page back-page" id="backPage">
+        <div class="diary-content">
+          Age is merely the number of years the world has been enjoying you 🤭.
+          You’re not older, just more legendary 😎.
+          May your WiFi always be strong 📶, your fridge full 🍫🥤, and your memes never end 😂❤️.
+        </div>
+      </div>
+    </div>
+  </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const closeDiaryButton = document.getElementById('closeDiaryButton');
+        const pageWrapper = document.getElementById('pageWrapper');
+        const frontPage = document.getElementById('frontPage');
+
+        closeDiaryButton.addEventListener('click', () => {
+          window.location.href = 'index.html'; // Redirect to index.html
+        });
+
+        // Mobile page turn logic
+        if (window.innerWidth <= 768) {
+          frontPage.addEventListener('click', () => {
+            pageWrapper.classList.toggle('turned');
+          });
+        }
+      });
+    </script>
+</body>
+</html>
+
+
+
+
